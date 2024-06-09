@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">Biblio Sitpi</string>
-    <string name="title_activity_main">Biblio Sitpi</string>
+    <string name="app_name" translatable="false">Biblio Sitpi</string>
+    <string name="title_activity_main" translatable="false">Biblio Sitpi</string>
+    <string name="search">Search</string>
 </resources>

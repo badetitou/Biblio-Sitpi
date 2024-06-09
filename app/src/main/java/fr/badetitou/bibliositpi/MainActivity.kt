@@ -27,8 +27,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import fr.badetitou.bibliositpi.model.api.Resource
@@ -102,7 +102,7 @@ class MainActivity : ComponentActivity() {
             },
             active = expanded,
             onActiveChange = { expanded = it },
-            placeholder = { Text("Search") }) { }
+            placeholder = { Text(stringResource(R.string.search)) }) { }
     }
 
     @Composable
@@ -133,7 +133,9 @@ class MainActivity : ComponentActivity() {
                 }
                 Column (
                     verticalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.padding(all = 8.dp).fillMaxWidth()
+                    modifier = Modifier
+                        .padding(all = 8.dp)
+                        .fillMaxWidth()
                 ){
                     Text(
                         text = "${resource.Ttl}",
