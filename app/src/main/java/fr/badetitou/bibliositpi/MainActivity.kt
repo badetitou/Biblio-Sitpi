@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
@@ -132,20 +133,24 @@ class MainActivity : ComponentActivity() {
                 }
                 Column (
                     verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(all = 8.dp).fillMaxWidth()
                 ){
                     Text(
                         text = "${resource.Ttl}",
                         textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleSmall
                     )
                     Text(
-                        text = "${resource.Dt}",
+                        text = "${resource.Crtr} | ${resource.Dt}",
                         textAlign = TextAlign.Left,
-                        maxLines = 1
+                        maxLines = 1,
+                        style = MaterialTheme.typography.labelSmall
                     )
                     Text(
                         text = "${resource.Desc}",
                         textAlign = TextAlign.Left,
-                        maxLines = 3
+                        maxLines = 3,
+                        style = MaterialTheme.typography.bodySmall
                     )
                 }
 
