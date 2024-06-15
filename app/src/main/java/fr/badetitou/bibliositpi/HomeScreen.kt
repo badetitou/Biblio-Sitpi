@@ -58,7 +58,8 @@ fun HomeScreen(navController: NavHostController) {
                 navController = navController
             )
         }
-    })
+    },
+        )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -149,7 +150,7 @@ fun ListOfDocument(innerPadding: PaddingValues = PaddingValues(0.dp), textQuery:
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DocumentItem(resource: Resource, navController: NavHostController) {
-    ElevatedCard(modifier = Modifier.fillMaxWidth(), onClick = { navController.navigate(NavigationItem.Login.route) }) {
+    ElevatedCard(modifier = Modifier.fillMaxWidth(), onClick = { navController.navigate(NavigationItem.ResourceDetail.route) }) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Column {
                 AsyncImage(
