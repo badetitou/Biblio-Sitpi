@@ -8,4 +8,7 @@ import retrofit2.http.POST
 interface SitpiService {
     @POST("Portal/Recherche/Search.svc/Search")
     fun search(@Body searchRequest: SearchRequest): Call<SearchAnswer>
+
+    @POST("Portal/Recherche/Search.svc/Search")
+    suspend fun searchPaginated(@Body searchRequest: SearchRequest): SearchAnswer
 }
