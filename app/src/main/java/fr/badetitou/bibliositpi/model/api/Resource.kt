@@ -1,5 +1,8 @@
 package fr.badetitou.bibliositpi.model.api
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Resource(
     var Ttl: String = "",
     var Desc: String = "",

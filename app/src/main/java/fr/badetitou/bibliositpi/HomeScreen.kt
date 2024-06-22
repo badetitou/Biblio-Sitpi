@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -49,17 +50,18 @@ fun HomeScreen(navController: NavHostController) {
 
     var text by rememberSaveable { mutableStateOf("") }
 
-    Scaffold(topBar = {
-        DocumentSearchBar(onQueryChange = { text = it }, text = text)
-    }, content = { innerPadding ->
-        Box(modifier = Modifier.padding(all = 16.dp)) {
-            ListOfDocument(
-                innerPadding = innerPadding, textQuery = text,
-                navController = navController
-            )
-        }
-    },
-        )
+    Scaffold(
+        topBar = {
+            DocumentSearchBar(onQueryChange = { text = it }, text = text)
+        },
+        content = { innerPadding ->
+            Box(modifier = Modifier.padding(all = 16.dp)) {
+                ListOfDocument(
+                    innerPadding = innerPadding, textQuery = text, navController = navController
+                )
+            }
+        },
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -129,7 +131,11 @@ class ResourceViewModel @Inject constructor(
 
 
 @Composable
-fun ListOfDocument(innerPadding: PaddingValues = PaddingValues(0.dp), textQuery: String, navController: NavHostController) {
+fun ListOfDocument(
+    innerPadding: PaddingValues = PaddingValues(0.dp),
+    textQuery: String,
+    navController: NavHostController
+) {
 
     val viewModel = hiltViewModel<ResourceViewModel>()
     val documents = viewModel.getResultsMetadatas(textQuery).collectAsLazyPagingItems()
@@ -150,7 +156,10 @@ fun ListOfDocument(innerPadding: PaddingValues = PaddingValues(0.dp), textQuery:
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DocumentItem(resource: Resource, navController: NavHostController) {
-    ElevatedCard(modifier = Modifier.fillMaxWidth(), onClick = { navController.navigate(NavigationItem.ResourceDetail.route) }) {
+    ElevatedCard(modifier = Modifier.fillMaxWidth(),
+        onClick = {
+            navController.navigate(resource)
+        }) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Column {
                 AsyncImage(
