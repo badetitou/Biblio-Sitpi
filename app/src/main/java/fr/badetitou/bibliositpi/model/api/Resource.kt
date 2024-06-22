@@ -9,5 +9,7 @@ data class Resource(
     var Dt: String = "",
     var Crtr: String = "",
     var Id: String = "",
+    var RscBase: String = "",
+    var RscId: String = "",
 )
 
