@@ -15,4 +15,7 @@ interface SitpiService {
     @POST("Portal/Services/ILSClient.svc/GetHoldings")
     suspend fun getHoldings(@Body searchRequest: SearchHoldingRecord): HoldingRecordAnswer
 
+    @POST("Portal/Recherche/logon.svc/logon")
+    suspend fun logon(): Boolean
+
 }

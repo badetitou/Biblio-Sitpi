@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -57,48 +58,55 @@ fun ResourceDetailScreen(navController: NavHostController, resource: Resource) {
         })
     }, content = { innerPadding ->
         Box(modifier = Modifier.padding(all = 16.dp)) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.padding(innerPadding)
-            ) {
-                Column {
-                    AsyncImage(
-                        model = "https://covers.openlibrary.org/b/isbn/${resource.Id.removePrefix("isbn:")}-M.jpg",
-                        contentDescription = null,
-                    )
-                }
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier
-                        .padding(all = 8.dp)
-                        .fillMaxWidth()
+            Column (modifier = Modifier.padding(innerPadding)){
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+
                 ) {
-                    Text(
-                        text = "${resource.Crtr} | ${resource.Dt}",
-                        textAlign = TextAlign.Left,
-                        maxLines = 1,
-                        style = MaterialTheme.typography.labelSmall
-                    )
-                    Text(
-                        text = resource.Desc,
-                        textAlign = TextAlign.Left,
-                        maxLines = 3,
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                    OutlinedCard(
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surface,
-                        ),
-                        border = BorderStroke(1.dp, Color.Black),
+                    Column {
+                        AsyncImage(
+                            model = "https://covers.openlibrary.org/b/isbn/${
+                                resource.Id.removePrefix(
+                                    "isbn:"
+                                )
+                            }-M.jpg",
+                            contentDescription = null,
+                        )
+                    }
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier
+                            .padding(all = 8.dp)
+                            .fillMaxWidth()
                     ) {
-                        Column {
-                            Text(
-                                text = "Se procurer le document",
-                                modifier = Modifier.padding(16.dp),
-                                textAlign = TextAlign.Center,
-                            )
-                            ListOfHoldings(resource)
-                        }
+                        Text(
+                            text = "${resource.Crtr} | ${resource.Dt}",
+                            textAlign = TextAlign.Left,
+                            maxLines = 1,
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                        Text(
+                            text = resource.Desc,
+                            textAlign = TextAlign.Left,
+                            maxLines = 3,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+
+                    }
+                }
+                OutlinedCard(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
+                    border = BorderStroke(1.dp, Color.Black),
+                ) {
+                    Column {
+                        Text(
+                            text = "Se procurer le document",
+                            modifier = Modifier.padding(16.dp),
+                            textAlign = TextAlign.Center,
+                        )
+                        ListOfHoldings(resource, navController)
                     }
                 }
             }
@@ -133,7 +141,7 @@ class HoldingsViewModel @Inject constructor() : ViewModel() {
 
 
 @Composable
-fun ListOfHoldings(resource: Resource) {
+fun ListOfHoldings(resource: Resource, navController: NavHostController) {
     val viewModel = hiltViewModel<HoldingsViewModel>()
     LaunchedEffect(Unit, block = {
         viewModel.getHoldings(resource)
@@ -148,7 +156,37 @@ fun ListOfHoldings(resource: Resource) {
         items(
             count = viewModel.holdingsListResponse.size,
         ) { index ->
-            Text(viewModel.holdingsListResponse[index].Site)
+            HoldingItem(viewModel.holdingsListResponse[index], navController)
         }
+    }
+}
+
+@Composable
+fun HoldingItem(holding: Holding, navController: NavHostController) {
+    val s = buildString {
+        if (holding.Statut == "En prêt") {
+            append("Retour prévu le ")
+            append(holding.WhenBack)
+        } else {
+            append("Disponible")
+        }
+        append(" à ")
+        append(holding.Site)
+    }
+    Column {
+        // Short call to action
+        Text(s, style = MaterialTheme.typography.titleSmall)
+        // Description
+        Text("${holding.Cote} | ${holding.Section} | ${holding.Type} | ${holding.Statut}",
+            style = MaterialTheme.typography.bodySmall)
+        Row (horizontalArrangement = Arrangement.Absolute.Right){
+            Button(onClick = { navController.navigate(Screen.LOGIN.name) },
+                shape = MaterialTheme.shapes.small
+            ) {
+                Text("Emprunter")
+            }
+        }
+
+
     }
 }
