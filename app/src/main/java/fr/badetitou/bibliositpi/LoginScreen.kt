@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -35,10 +36,11 @@ fun LoginScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(10.dp))
         TextField(value = password.value, onValueChange = {password.value = it}, label = { Text(text = "Password")})
         Spacer(modifier = Modifier.height(20.dp))
-        Button(onClick = { /*TODO*/ },
+        Button(onClick = {
+            // SitpiClient.apiService.logon(username.value.text, password.value.text, true)
+        },
             shape = MaterialTheme.shapes.medium) {
             Text(text = "Login")
         }
-
     }
 }
